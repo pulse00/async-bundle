@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service class="Dubture\AsyncBundle\RabbitMQ\RabbitMQBackend" id="dubture.async.backend.rabbitmq">
+            <argument id="service_container" type="service"/>
+        </service>
+
+        <service class="Dubture\AsyncBundle\RabbitMQ\RabbitMQConsumer" id="dubture.async.rabbitconsumer">
+            <argument id="service_container" type="service"/>
+        </service>
+
+    </services>
+
+</container>

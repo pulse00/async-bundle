@@ -1,0 +1,5 @@
+*.iml
+vendor/
+Tests/Controller/App/cache/
+/composer.phar
+composer.lock

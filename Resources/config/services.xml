@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service class="Dubture\AsyncBundle\Interceptor\AsyncInterceptor" id="dubture.async.interceptor">
+            <argument id="annotations.file_cache_reader" type="service"/>
+            <argument><!-- Set in the AsyncCompilerPass--></argument>
+            <argument id="service_container" type="service"/>
+        </service>
+
+        <service class="Dubture\AsyncBundle\Pointcut\AsyncPointcut" id="dubture_async_bundle.pointcut.asyncpointcut">
+            <argument id="annotation_reader" type="service"/>
+            <tag name="jms_aop.pointcut" interceptor="dubture.async.interceptor"/>
+        </service>
+
+    </services>
+
+</container>
