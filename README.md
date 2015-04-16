@@ -1,5 +1,8 @@
 ### Dubture-Async Bundle
 
+[![Build Status](https://travis-ci.org/pulse00/async-bundle.svg?branch=master)](https://travis-ci.org/pulse00/async-bundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pulse00/async-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pulse00/async-bundle/?branch=master)
+
 This symfony-bundle provides a high-level way of sending expensive logic to backend workers.
 
 Consider the following service:
