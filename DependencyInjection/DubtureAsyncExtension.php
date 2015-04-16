@@ -34,7 +34,7 @@ class DubtureAsyncExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $validBackends = ['rabbitmq', 'resque', 'runtime', 'sonata'];
+        $validBackends = array('rabbitmq', 'resque', 'runtime', 'sonata');
         $backend = $config['backend'];
 
         if (!in_array($backend, $validBackends)) {
