@@ -1,5 +1,5 @@
 *.iml
 vendor/
-Tests/Controller/App/cache/
+Tests/App/cache/
 /composer.phar
 composer.lock
