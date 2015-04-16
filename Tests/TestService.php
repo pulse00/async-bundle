@@ -19,9 +19,8 @@ class TestService
 {
     private $payload;
 
-
     /**
-     * @Async(service="test_service")
+     * @Async
      */
     public function doWork($withWhat)
     {

@@ -1,0 +1,22 @@
+framework:
+    test: ~
+    secret:          secret
+
+dubture_async:
+  backend: resque
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+
+services:
+    test_service:
+        class:        TestService

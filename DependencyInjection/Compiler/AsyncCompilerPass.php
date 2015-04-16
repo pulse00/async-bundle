@@ -81,9 +81,5 @@ class AsyncCompilerPass implements CompilerPassInterface
                 }
             }
         }
-
-        if (count($sonataConsumers)) {
-            $container->addDefinitions(array_values($sonataConsumers));
-        }
     }
 }

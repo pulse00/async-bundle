@@ -19,14 +19,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * Class DefaultControllerTest
  * @package Dubture\AsyncBundle\Tests\Controller
  */
-class RuntimeBackendTest extends WebTestCase
+class ResqueBackendTest extends WebTestCase
 {
     public function testRuntimeBackend()
     {
-        $client = static::createClient(array('environment' => 'runtime'));
+        $client = static::createClient(array('environment' => 'resque'));
+        $backend = $client->getKernel()->getContainer()->get('dubture.async.backend.resque');
         $testService = $client->getKernel()->getContainer()->get('test_service');
+
         $testService->doWork('something');
 
-        $this->assertEquals('something', $testService->getPayload());
+        $this->assertNull($testService->getPayload());
     }
 }

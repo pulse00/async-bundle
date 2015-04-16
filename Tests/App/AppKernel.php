@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/TestService.php';
+require_once __DIR__ . '/../TestService.php';
 
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new BCC\ResqueBundle\BCCResqueBundle(),
             new Dubture\AsyncBundle\DubtureAsyncBundle()
         );
 
@@ -31,7 +32,6 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        // We don't need that Environment stuff, just one config
-        $loader->load(__DIR__ . '/config.yml');
+        $loader->load(__DIR__ . '/config_' . $this->getEnvironment() . '.yml');
     }
 }
