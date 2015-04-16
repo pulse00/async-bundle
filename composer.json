@@ -1,5 +1,6 @@
 {
   "name": "dubture/async-bundle",
+  "description": "Provides an easy to use abstraction for async backend workers in Symfony2",
   "authors": [
     {
       "name": "Robert Gruendler",
