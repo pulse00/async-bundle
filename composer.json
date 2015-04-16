@@ -17,8 +17,7 @@
     "background"
   ],
   "require": {
-    "jms/aop-bundle": "1.1.*@dev",
-    "sonata-project/notification-bundle": "~2.3"
+    "jms/aop-bundle": "1.1.*@dev"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.5",
