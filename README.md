@@ -34,7 +34,7 @@ use Dubture\AsyncBundle\Annotation\Async;
 class MediaTranscodingService
 {
     /**
-     * @Async(service="media_transcoder")
+     * @Async
      */
     public function transcodeFile($sourcePath)
     {
@@ -53,10 +53,6 @@ Methods annotated with `@Async` need to adhere to the following contract:
 
 If you need to react to something happening inside your backend worker, you can simply dispatch
 events when it's done.
-
-Note the `service` attribute of the `@Async` annotation: This must match the service
-ID of the symfony service this class represents. Unfortunately this has to been set for now as i am
-not aware of any means to infer the service id of an object during runtime.
 
 ### Configuration
 
@@ -79,5 +75,4 @@ See `Resources/docs` for documentation of the specific backends.
 
 ### TODO
 
-- [ ] Implement a lookup logic to get rid of the `service` attribute in the `@Async` annotation
 - [ ] Improve the Sonata backend -> Currently only one routing key is possible

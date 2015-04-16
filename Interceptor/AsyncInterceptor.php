@@ -18,6 +18,8 @@ use Doctrine\Common\Annotations\Reader;
 use Dubture\AsyncBundle\Annotation\Async;
 use Dubture\AsyncBundle\Backend\AsyncBackend;
 use Dubture\AsyncBundle\Backend\RuntimeBackend;
+use Metadata\ClassHierarchyMetadata;
+use Metadata\MetadataFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -57,6 +59,12 @@ class AsyncInterceptor implements MethodInterceptorInterface
             return;
         }
 
+        /** @var MetadataFactory $factory */
+        $factory = $this->container->get('jms_di_extra.metadata.metadata_factory');
+
+        /** @var ClassHierarchyMetadata $metadata */
+        $metadata = $factory->getMetadataForClass($invocation->reflection->getDeclaringClass()->getName());
+
         /** @var Async $async */
         $async = $this->reader->getMethodAnnotation($invocation->reflection, 'Dubture\AsyncBundle\Annotation\Async');
 
@@ -65,7 +73,7 @@ class AsyncInterceptor implements MethodInterceptorInterface
         );
 
         $this->backend->publishInvocation(
-            $async->service,
+            $metadata->getOutsideClassMetadata()->id,
             $invocation->reflection->getName(),
             $invocation->arguments,
             $options

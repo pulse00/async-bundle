@@ -18,9 +18,6 @@ namespace Dubture\AsyncBundle\Annotation;
 class Async
 {
     /** @var string */
-    public $service;
-
-    /** @var string */
     public $routingKey;
 
 }

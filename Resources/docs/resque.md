@@ -12,7 +12,7 @@ use Dubture\AsyncBundle\Annotation\Async;
 class MediaTranscodingService
 {
     /**
-     * @Async(service="media_transcoder", routingKey="upload_picture")
+     * @Async(routingKey="upload_picture")
      */
     public function transcodeFile($sourcePath)
     {
@@ -29,7 +29,7 @@ use Dubture\AsyncBundle\Annotation\Async;
 class BulkEmailService
 {
     /**
-     * @Async(service="bulk_email_service")
+     * @Async
      */
     public function sendBulkEmail(array $emails))
     {
