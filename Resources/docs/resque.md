@@ -41,12 +41,12 @@ class BulkEmailService
 Then run your workers:
 
 
-Will handle all '@Async` methods without a `routingKey` attribute:
+Will handle all `@Async` methods without a `routingKey` attribute:
 
 `app/console bcc:resque:worker-start default`
 
 
-Will handle only '@Async` methods the `upload_picture` attribute:
+Will handle only `@Async` methods the `upload_picture` attribute:
 
 `app/console bcc:resque:worker-start upload_picture`
 
