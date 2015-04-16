@@ -10,11 +10,6 @@
             <argument id="sonata.notification.backend" type="service"/>
         </service>
 
-        <service class="Dubture\AsyncBundle\Sonata\SonataConsumer" id="dubture.async.sonataconsumer">
-            <argument id="service_container" type="service"/>
-            <tag name="sonata.notification.consumer" type="upload_picture"/>
-        </service>
-
     </services>
 
 </container>

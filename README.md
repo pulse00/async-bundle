@@ -75,4 +75,4 @@ See `Resources/docs` for documentation of the specific backends.
 
 ### TODO
 
-- [ ] Improve the Sonata backend -> Currently only one routing key is possible
+- [ ] Add more tests
