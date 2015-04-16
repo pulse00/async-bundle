@@ -43,8 +43,20 @@ class MediaTranscodingService
 }
 ```
 
-Now the call to `transcodeFile` will be intercepted and delegated to a backend worker.
+Now any call to `transcodeFile` will be intercepted and delegated to a backend worker.
 
+
+Methods annotated with `@Async` need to adhere to the following contract:
+
+1. The method arguments must be serializable (no resources, e.g. doctrine connections)
+2. The method should not return anything (any return value will be lost)
+
+If you need to react to something happening inside your backend worker, you can simply dispatch
+events when it's done.
+
+Note the `service` attribute of the `@Async` annotation: This must match the service
+ID of the symfony service this class represents. Unfortunately this has to been set for now as i am
+not aware of any means to infer the service id of an object during runtime.
 
 ### Configuration
 
@@ -63,3 +75,9 @@ The backend-worker implementation relies on one of the following bundles:
 
 
 See `Resources/docs` for documentation of the specific backends.
+
+
+### TODO
+
+- [ ] Implement a lookup logic to get rid of the `service` attribute in the `@Async` annotation
+- [ ] Improve the Sonata backend -> Currently only one routing key is possible
