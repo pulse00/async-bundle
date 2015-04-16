@@ -29,6 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AsyncInterceptor implements MethodInterceptorInterface
 {
+    /** property being set on the invokable so we know when to invoke the real */
+    const HINT = '__dubture_async_hint';
+
     /** @var Reader */
     private $reader;
 
@@ -40,9 +43,8 @@ class AsyncInterceptor implements MethodInterceptorInterface
 
     /** @var MetadataFactory  */
     private $factory;
-    /**
-     * @var LoggerInterface
-     */
+
+    /** @var LoggerInterface  */
     private $logger;
 
     /**
@@ -70,7 +72,7 @@ class AsyncInterceptor implements MethodInterceptorInterface
         $methodName = $invocation->reflection->getName();
         $className = $invocation->reflection->getDeclaringClass()->getName();
 
-        if (property_exists($invocation->object, RuntimeBackend::HINT)) {
+        if (property_exists($invocation->object, self::HINT)) {
             $this->logger->debug('Invoking service method from async backend: ' . $className . '::'. $methodName);
             $invocation->proceed();
             return;
@@ -104,8 +106,9 @@ class AsyncInterceptor implements MethodInterceptorInterface
     public function executeInvocation($service, $method, array $arguments)
     {
         $service = $this->container->get($service);
-        $service->{RuntimeBackend::HINT} = true;
+        $service->{self::HINT} = true;
 
+        $this->logger->debug('Async backend invoked service call ' . get_class($service) . '::' . $method);
         call_user_func_array(array($service, $method), $arguments);
     }
 }

@@ -21,11 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RuntimeBackend implements AsyncBackend
 {
     /**
-     * @var string
-     */
-    const HINT = '__dubture_async_hint';
-
-    /**
      * @var ContainerInterface
      */
     private $container;

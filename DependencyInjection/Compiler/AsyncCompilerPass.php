@@ -34,48 +34,56 @@ class AsyncCompilerPass implements CompilerPassInterface
         $backend = $configs[0]['backend'];
         $interceptor->replaceArgument(1, new Reference('dubture.async.backend.' . $backend));
 
-        // create the consumers for the sonata backend
         if ($backend === 'sonata') {
+            $this->setupSonataConsumers($container);
+        }
+    }
 
-            $pointcut = $container->get('dubture_async_bundle.pointcut.asyncpointcut');
-            $sonataConsumers = array();
+    /**
+     * Creates the necessary consumers for the sonata backend based on the @Async annotations
+     *
+     * @param ContainerBuilder $container
+     */
+    private function setupSonataConsumers(ContainerBuilder $container)
+    {
+        $pointcut = $container->get('dubture_async_bundle.pointcut.asyncpointcut');
+        $sonataConsumers = array();
 
-            // search all service definitions for Async annotations
-            foreach ($container->getDefinitions() as $definition) {
+        // search all service definitions for Async annotations
+        foreach ($container->getDefinitions() as $definition) {
 
-                $className = $definition->getClass();
+            $className = $definition->getClass();
 
-                if ($className === null || strpos($className, '%') !== false) {
-                    continue;
-                }
+            if ($className === null || strpos($className, '%') !== false) {
+                continue;
+            }
 
-                $class = new \ReflectionClass($className);
+            $class = new \ReflectionClass($className);
 
-                foreach (ReflectionUtils::getOverrideableMethods($class) as $method) {
+            foreach (ReflectionUtils::getOverrideableMethods($class) as $method) {
 
-                    // we found an Async annotation, create the sonata consumer for it
-                    if ($pointcut->matchesMethod($method)) {
+                // we found an Async annotation, create the sonata consumer for it
+                if ($pointcut->matchesMethod($method)) {
 
-                        $reader = $container->get('annotations.reader');
-                        /** @var Async $annotation */
-                        $annotation = $reader->getMethodAnnotation($method, 'Dubture\AsyncBundle\Annotation\Async');
-                        $routingKey = $annotation->routingKey !== null ? $annotation->routingKey : 'default';
+                    $reader = $container->get('annotations.reader');
+                    /** @var Async $annotation */
+                    $annotation = $reader->getMethodAnnotation($method, 'Dubture\AsyncBundle\Annotation\Async');
+                    $routingKey = $annotation->routingKey !== null ? $annotation->routingKey : 'default';
 
-                        if (array_key_exists($routingKey, $sonataConsumers)) {
-                            continue;
-                        }
-
-                        $definition = $container->register('dubture.async.sonata_' . $routingKey, 'Dubture\AsyncBundle\Sonata\SonataConsumer');
-                        $definition->addArgument(new Reference('service_container'));
-                        $definition->addTag('sonata.notification.consumer', array('type' => $routingKey));
-                        $sonataConsumers[$routingKey] = $definition;
+                    if (array_key_exists($routingKey, $sonataConsumers)) {
+                        continue;
                     }
+
+                    $definition = $container->register('dubture.async.sonata_' . $routingKey, 'Dubture\AsyncBundle\Sonata\SonataConsumer');
+                    $definition->addArgument(new Reference('service_container'));
+                    $definition->addTag('sonata.notification.consumer', array('type' => $routingKey));
+                    $sonataConsumers[$routingKey] = $definition;
                 }
             }
+        }
 
-            if (count($sonataConsumers)) {
-                $container->addDefinitions(array_values($sonataConsumers));
-            }
+        if (count($sonataConsumers)) {
+            $container->addDefinitions(array_values($sonataConsumers));
         }
     }
 }
