@@ -6,7 +6,9 @@ php:
   - 5.5
   - 5.6
 
-before_script: composer install -n
+before_script:
+  - phpenv config-add travis.php.ini
+  - composer install -n
 
 script: ./vendor/bin/phpunit
 
