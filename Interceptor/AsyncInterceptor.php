@@ -79,7 +79,11 @@ class AsyncInterceptor implements MethodInterceptorInterface
         }
 
         /** @var ClassHierarchyMetadata $metadata */
-        $metadata = $this->factory->getMetadataForClass($invocation->reflection->getDeclaringClass()->getName());
+        $metadata = $this->factory->getMetadataForClass($className);
+
+        if ($metadata === null) {
+            throw new \RuntimeException("Unable to load class metadata for " . $className);
+        }
 
         /** @var Async $async */
         $async = $this->reader->getMethodAnnotation($invocation->reflection, 'Dubture\AsyncBundle\Annotation\Async');

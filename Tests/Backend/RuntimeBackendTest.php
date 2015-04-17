@@ -13,6 +13,7 @@ namespace Dubture\AsyncBundle\Tests\Backend;
 
 $_SERVER['KERNEL_DIR'] = 'Tests/App';
 
+use Metadata\MetadataFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -24,7 +25,16 @@ class RuntimeBackendTest extends WebTestCase
     public function testRuntimeBackend()
     {
         $client = static::createClient(array('environment' => 'runtime'));
+
+        /** @var MetadataFactory $factory */
+        $factory = $client->getKernel()->getContainer()->get('jms_di_extra.metadata.metadata_factory');
+
+        $md = $factory->getMetadataForClass('TestService');
+
+        $this->assertNotNull($md);
+
         $testService = $client->getKernel()->getContainer()->get('test_service');
+
         $testService->doWork('something');
 
         $this->assertEquals('something', $testService->getPayload());

@@ -11,7 +11,12 @@
 
 use Dubture\AsyncBundle\Annotation\Async;
 
+use JMS\DiExtraBundle\Annotation as DI;
+
+
 /**
+ * @DI\Service("test_service")
+ *
  * Class TestService
  * @package Dubture\Async\Tests\App
  */

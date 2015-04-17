@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/../TestService.php';
-
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -22,9 +20,10 @@ class AppKernel extends Kernel
         $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new BCC\ResqueBundle\BCCResqueBundle(),
-            new Dubture\AsyncBundle\DubtureAsyncBundle()
+            new Dubture\AsyncBundle\DubtureAsyncBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
         );
 
         return $bundles;

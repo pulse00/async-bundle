@@ -1,3 +1,6 @@
+imports:
+    - { resource: services.xml }
+
 framework:
     test: ~
     secret:          secret
@@ -15,8 +18,3 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
-
-
-services:
-    test_service:
-        class:        TestService
