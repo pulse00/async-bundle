@@ -38,11 +38,11 @@ class SonataBackend implements AsyncBackend
     {
         $this->backend->createAndPublish(
                 $options['routingKey'],
-                [
+                array(
                     'service' => $service,
                     'method' => $method,
                     'arguments' => $arguments
-                ]
+                )
         );
     }
 }
