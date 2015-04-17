@@ -72,7 +72,3 @@ The backend-worker implementation relies on one of the following bundles:
 
 See `Resources/docs` for documentation of the specific backends.
 
-
-### TODO
-
-- [ ] Add more tests
