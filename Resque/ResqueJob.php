@@ -13,6 +13,7 @@ namespace Dubture\AsyncBundle\Resque;
 
 use BCC\ResqueBundle\ContainerAwareJob;
 use Dubture\AsyncBundle\Backend\RuntimeBackend;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class ResqueJob
@@ -20,6 +21,9 @@ use Dubture\AsyncBundle\Backend\RuntimeBackend;
  */
 class ResqueJob extends ContainerAwareJob
 {
+    /** @var ContainerInterface */
+    protected $container;
+
     /**
      * {@inheritdoc}
      */
@@ -27,5 +31,21 @@ class ResqueJob extends ContainerAwareJob
     {
         $interceptor = $this->getContainer()->get('dubture.async.interceptor');
         $interceptor->executeInvocation($args['service'], $args['method'], $args['arguments']);
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+      return $this->container;
+    }
+
+    /**
+     * @param $container
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+      $this->container = $container;
     }
 }

@@ -21,14 +21,48 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class ResqueBackendTest extends WebTestCase
 {
-    public function testRuntimeBackend()
+    public function testResqueBackend()
     {
         $client = static::createClient(array('environment' => 'resque'));
-        $backend = $client->getKernel()->getContainer()->get('dubture.async.backend.resque');
+
+        $backend = $this->getMockBuilder('\Dubture\AsyncBundle\Resque\ResqueBackend')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $client->getKernel()->getContainer()->set('dubture.async.backend.resque', $backend);
+
         $testService = $client->getKernel()->getContainer()->get('test_service');
+
+        $backend->expects($this->once())
+            ->method('publishInvocation')
+            ->with($this->equalTo('test_service'), 'doWork', array('something'));
 
         $testService->doWork('something');
 
         $this->assertNull($testService->getPayload());
     }
+
+    public function testResqueJob()
+    {
+        $client = static::createClient(array('environment' => 'resque'));
+
+        $backend = $this->getMockBuilder('\Dubture\AsyncBundle\Resque\ResqueBackend')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $client->getKernel()->getContainer()->set('dubture.async.backend.resque', $backend);
+
+        $testService = $client->getKernel()->getContainer()->get('test_service');
+
+        $backend->expects($this->never())
+            ->method('publishInvocation');
+
+        $job = new \Dubture\AsyncBundle\Resque\ResqueJob();
+        $job->setContainer($client->getKernel()->getContainer());
+
+        $job->run(array('service' => 'test_service', 'method' => 'doWork', 'arguments' => array('something')));
+
+        $this->assertEquals('something', $testService->getPayload());
+    }
+
 }

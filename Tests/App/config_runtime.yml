@@ -1,20 +1,6 @@
 imports:
-    - { resource: services.xml }
-
-framework:
-    test: ~
-    secret:          secret
+    - { resource: config.yml }
 
 dubture_async:
   backend: runtime
-
-monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
-            level: debug
+  
