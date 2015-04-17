@@ -17,11 +17,9 @@ use CG\Proxy\MethodInvocation;
 use Doctrine\Common\Annotations\Reader;
 use Dubture\AsyncBundle\Annotation\Async;
 use Dubture\AsyncBundle\Backend\AsyncBackend;
-use Dubture\AsyncBundle\Backend\RuntimeBackend;
 use Metadata\ClassHierarchyMetadata;
 use Metadata\MetadataFactory;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AsyncInterceptor
@@ -38,9 +36,6 @@ class AsyncInterceptor implements MethodInterceptorInterface
     /** @var AsyncBackend  */
     private $backend;
 
-    /** @var ContainerInterface  */
-    private $container;
-
     /** @var MetadataFactory  */
     private $factory;
 
@@ -52,14 +47,12 @@ class AsyncInterceptor implements MethodInterceptorInterface
      * @param AsyncBackend $backend
      * @param MetadataFactory $factory
      * @param LoggerInterface $logger
-     * @param ContainerInterface $container
      */
     public function __construct(Reader $reader, AsyncBackend $backend,
-                                MetadataFactory $factory, LoggerInterface $logger, ContainerInterface $container)
+                                MetadataFactory $factory, LoggerInterface $logger)
     {
         $this->reader = $reader;
         $this->backend = $backend;
-        $this->container = $container;
         $this->factory = $factory;
         $this->logger = $logger;
     }
@@ -100,19 +93,5 @@ class AsyncInterceptor implements MethodInterceptorInterface
             $invocation->arguments,
             $options
         );
-    }
-
-    /**
-     * @param $service
-     * @param $method
-     * @param array $arguments
-     */
-    public function executeInvocation($service, $method, array $arguments)
-    {
-        $service = $this->container->get($service);
-        $service->{self::HINT} = true;
-
-        $this->logger->debug('Async backend invoked service call ' . get_class($service) . '::' . $method);
-        call_user_func_array(array($service, $method), $arguments);
     }
 }

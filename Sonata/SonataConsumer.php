@@ -11,6 +11,7 @@
 
 namespace Dubture\AsyncBundle\Sonata;
 
+use Dubture\AsyncBundle\Interceptor\AsyncExecutor;
 use Sonata\NotificationBundle\Consumer\ConsumerInterface;
 use Sonata\NotificationBundle\Consumer\ConsumerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,15 +22,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SonataConsumer implements ConsumerInterface
 {
-    /** @var ContainerInterface  */
-    private $container;
+    /** @var AsyncExecutor  */
+    private $executor;
 
     /**
-     * @param ContainerInterface $container
+     * @param AsyncExecutor $executor
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(AsyncExecutor $executor)
     {
-        $this->container = $container;
+        $this->executor = $executor;
     }
 
     /**
@@ -38,10 +39,6 @@ class SonataConsumer implements ConsumerInterface
     public function process(ConsumerEvent $event)
     {
         $body = $event->getMessage()->getBody();
-        $service = $body['service'];
-        $method = $body['method'];
-        $args = $body['arguments'];
-
-        $this->container->get('dubture.async.interceptor')->executeInvocation($service, $method, $args);
+        $this->executor->executeInvocation($body['service'], $body['method'], $body['arguments']);
     }
 }

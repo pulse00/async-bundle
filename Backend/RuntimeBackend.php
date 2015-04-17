@@ -11,26 +11,23 @@
 
 namespace Dubture\AsyncBundle\Backend;
 
-use Dubture\AsyncBundle\Interceptor\AsyncInterceptor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Dubture\AsyncBundle\Interceptor\AsyncExecutor;
 
 /**
  * Class RuntimeBackend
- * @package Dubture\AsyncBundle\Pointcut
+ * @package Dubture\AsyncBundle\Backend
  */
 class RuntimeBackend implements AsyncBackend
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    /** @var AsyncExecutor */
+    private $executor;
 
     /**
-     * @param ContainerInterface $container
+     * @param AsyncExecutor $executor
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(AsyncExecutor $executor)
     {
-        $this->container = $container;
+        $this->executor = $executor;
     }
 
     /**
@@ -38,6 +35,6 @@ class RuntimeBackend implements AsyncBackend
      */
     public function publishInvocation($service, $method, array $arguments, array $options = null)
     {
-        $this->container->get('dubture.async.interceptor')->executeInvocation($service, $method, $arguments);
+        $this->executor->executeInvocation($service, $method, $arguments);
     }
 }

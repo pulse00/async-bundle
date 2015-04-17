@@ -29,8 +29,8 @@ class ResqueJob extends ContainerAwareJob
      */
     public function run($args)
     {
-        $interceptor = $this->getContainer()->get('dubture.async.interceptor');
-        $interceptor->executeInvocation($args['service'], $args['method'], $args['arguments']);
+        $executor = $this->getContainer()->get('dubture.async.executor');
+        $executor->executeInvocation($args['service'], $args['method'], $args['arguments']);
     }
 
     /**

@@ -60,7 +60,7 @@ class SonataBackendTest extends WebTestCase
         $backend->expects($this->never())
                 ->method('publishInvocation');
 
-        $consumer = new SonataConsumer($client->getKernel()->getContainer());
+        $consumer = new SonataConsumer($client->getKernel()->getContainer()->get('dubture.async.executor'));
 
         $message = new Message();
         $message->setBody(array('service' => 'test_service', 'method' => 'doWork', 'arguments' => array('something')));

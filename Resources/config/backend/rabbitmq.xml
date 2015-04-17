@@ -11,7 +11,7 @@
         </service>
 
         <service class="Dubture\AsyncBundle\RabbitMQ\RabbitMQConsumer" id="dubture.async.rabbitconsumer">
-            <argument id="service_container" type="service"/>
+            <argument id="dubture.async.executor" type="service"/>
         </service>
 
     </services>

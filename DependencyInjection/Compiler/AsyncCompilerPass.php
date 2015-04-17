@@ -75,7 +75,7 @@ class AsyncCompilerPass implements CompilerPassInterface
                     }
 
                     $definition = $container->register('dubture.async.sonata_' . $routingKey, 'Dubture\AsyncBundle\Sonata\SonataConsumer');
-                    $definition->addArgument(new Reference('service_container'));
+                    $definition->addArgument(new Reference('dubture.async.executor'));
                     $definition->addTag('sonata.notification.consumer', array('type' => $routingKey));
                     $sonataConsumers[$routingKey] = $definition;
                 }

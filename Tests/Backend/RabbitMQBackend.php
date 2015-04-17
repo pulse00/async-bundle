@@ -58,7 +58,7 @@ class RabbitMQBackendTest extends WebTestCase
         $backend->expects($this->never())
                 ->method('publishInvocation');
 
-        $consumer = new RabbitMQConsumer($client->getKernel()->getContainer());
+        $consumer = new RabbitMQConsumer($client->getKernel()->getContainer()->get('dubture.async.executor'));
 
         $message = $this->getMockBuilder('\PhpAmqpLib\Message\AMQPMessage')
                 ->disableOriginalConstructor()

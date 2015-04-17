@@ -7,7 +7,7 @@
     <services>
 
         <service class="Dubture\AsyncBundle\Backend\RuntimeBackend" id="dubture.async.backend.runtime">
-            <argument id="service_container" type="service"/>
+            <argument id="dubture.async.executor" type="service"/>
         </service>
 
     </services>

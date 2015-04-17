@@ -11,7 +11,7 @@
 
 namespace Dubture\AsyncBundle\RabbitMQ;
 
-use Dubture\AsyncBundle\Interceptor\AsyncInterceptor;
+use Dubture\AsyncBundle\Interceptor\AsyncExecutor;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -23,17 +23,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RabbitMQConsumer implements ConsumerInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    /** @var AsyncExecutor  */
+    private $executor;
 
     /**
-     * @param ContainerInterface $container
+     * @param AsyncExecutor $executor
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(AsyncExecutor $executor)
     {
-        $this->container = $container;
+        $this->executor = $executor;
     }
 
     /**
@@ -42,6 +40,6 @@ class RabbitMQConsumer implements ConsumerInterface
     public function execute(AMQPMessage $msg)
     {
         $body = unserialize($msg->body);
-        $this->container->get('dubture.async.interceptor')->executeInvocation($body['service'], $body['method'], $body['arguments']);
+        $this->executor->executeInvocation($body['service'], $body['method'], $body['arguments']);
     }
 }

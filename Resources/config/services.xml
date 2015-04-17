@@ -11,13 +11,18 @@
             <argument><!-- Set in the AsyncCompilerPass--></argument>
             <argument id="jms_di_extra.metadata.metadata_factory" type="service"/>
             <argument id="logger" type="service"/>
-            <argument id="service_container" type="service"/> <!-- needed to dynamically load the user service -->
         </service>
 
         <service class="Dubture\AsyncBundle\Pointcut\AsyncPointcut" id="dubture_async_bundle.pointcut.asyncpointcut">
             <argument id="annotation_reader" type="service"/>
             <tag name="jms_aop.pointcut" interceptor="dubture.async.interceptor"/>
         </service>
+
+        <service class="Dubture\AsyncBundle\Interceptor\AsyncExecutor" id="dubture.async.executor">
+            <argument id="service_container" type="service"/>
+            <argument id="logger" type="service"/>
+        </service>
+
 
     </services>
 
