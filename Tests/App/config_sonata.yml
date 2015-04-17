@@ -1,0 +1,6 @@
+imports:
+    - { resource: config.yml }
+
+dubture_async:
+  backend: sonata
+

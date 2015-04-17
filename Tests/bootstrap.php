@@ -17,3 +17,7 @@ spl_autoload_register(function($class) {
 AnnotationRegistry::registerFile(realpath(__DIR__ . '/../Annotation/Async.php'));
 
 AnnotationRegistry::registerFile(realpath(__DIR__ . '/../vendor/jms/di-extra-bundle/JMS/DiExtraBundle/Annotation/Service.php'));
+AnnotationRegistry::registerFile(realpath(__DIR__ . '/../vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Annotation/ApiDoc.php'));
+
+AnnotationRegistry::registerFile(realpath(__DIR__ . '/../vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Controller/Annotations/QueryParam.php'));
+AnnotationRegistry::registerFile(realpath(__DIR__ . '/../vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Controller/Annotations/View.php'));
