@@ -12,7 +12,6 @@
 namespace Dubture\AsyncBundle\Resque;
 
 use BCC\ResqueBundle\ContainerAwareJob;
-use Dubture\AsyncBundle\Backend\RuntimeBackend;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -36,9 +35,13 @@ class ResqueJob extends ContainerAwareJob
     /**
      * @return ContainerInterface
      */
-    public function getContainer()
+    protected function getContainer()
     {
-      return $this->container;
+        if ($this->container !== null) {
+            return $this->container;
+        }
+
+        return parent::getContainer();
     }
 
     /**
@@ -46,6 +49,6 @@ class ResqueJob extends ContainerAwareJob
      */
     public function setContainer(ContainerInterface $container)
     {
-      $this->container = $container;
+        $this->container = $container;
     }
 }
