@@ -1,9 +1,48 @@
-### Dubture-Async Bundle
+# Async Bundle
 
 [![Build Status](https://travis-ci.org/pulse00/async-bundle.svg?branch=master)](https://travis-ci.org/pulse00/async-bundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pulse00/async-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pulse00/async-bundle/?branch=master)
 
-This symfony-bundle provides a high-level way of sending expensive logic to background workers.
+This Symfony bundle provides a high-level way of sending expensive logic to background workers.
+
+## Configuration
+
+1. Install the bundle using `composer require "dubture/async-bundle"`
+2. Add the necessary bundles to your Kernel:
+
+```php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+
+        // register the async bundle
+        new Dubture\AsyncBundle\DubtureAsyncBundle(),
+
+        // register the dependencies of the async bundle
+        new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+        new JMS\AopBundle\JMSAopBundle(),
+
+        // your application bundles here...
+
+    );
+
+    return $bundles;
+}
+```
+
+3. Configure which backend to use:
+
+
+```yml
+# app/config/config.yml
+dubture_async:
+  backend: rabbitmq # one of rabbitmq|resque|sonata|runtime
+```
+
+
+## Usage
 
 Consider the following service:
 
@@ -48,20 +87,12 @@ Now any call to `transcodeFile` will be intercepted and delegated to a backgroun
 
 Methods annotated with `@Async` need to adhere to the following contract:
 
-1. The method arguments must be serializable (no resources, e.g. doctrine connections)
-2. The method should not return anything (any return value will be lost)
+1. The class declaring the async method must be a service
+2. The methods arguments must be serializable (no resources, e.g. doctrine connections)
+3. The method should not return anything (any return value will be lost)
 
 If you need to react to something happening inside your background worker, you can simply dispatch
 events when it's done.
-
-### Configuration
-
-```yml
-
-dubture_async:
-  backend: rabbitmq # one of rabbitmq|resque|sonata|runtime
-
-```
 
 The background-worker implementation relies on one of the following bundles:
 
